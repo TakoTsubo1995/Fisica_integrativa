@@ -1,0 +1,136 @@
+function params = configuracion_parametros()
+% CONFIGURACION_PARAMETROS Configuración centralizada del análisis arterial
+%   Retorna estructura con todos los parámetros del proyecto
+%
+%   MODIFICAR VALORES AQUÍ para cambiar el comportamiento del análisis
+%
+%   Autores: Proyecto de Física - Análisis de Flujo Arterial
+%   Fecha: 2026-01-11
+
+%% ========== GEOMETRÍA ARTERIAL ==========
+
+% Radios arteriales (metros)
+params.radio_min = 0.0035;        % m - Radio mínimo arterial
+params.radio_max = 0.0053;         % m - Radio máximo arterial
+params.num_radios = 100;           % Número de puntos en el rango
+
+% Longitudes arteriales (metros)
+params.longitud_min = 0.029;       % m - Longitud mínima
+params.longitud_max = 0.093;       % m - Longitud máxima
+params.num_longitudes = 100;       % Número de puntos en el rango
+
+% Tasas de oclusión (porcentaje)
+params.ocl_radial_min = 10;         % % - Oclusión radial mínima
+params.ocl_radial_max = 100;       % % - Oclusión radial máxima
+params.num_ocl_radial = 101;       % Puntos (0, 1, 2, ..., 100%)
+
+params.ocl_longitudinal_min = 0;   % % - Oclusión longitudinal mínima
+params.ocl_longitudinal_max = 100; % % - Oclusión longitudinal máxima
+params.num_ocl_long = 101;         % Puntos
+
+%% ========== PROPIEDADES DE LA SANGRE ==========
+
+% Viscosidad (Pa·s)
+params.eta_min = 3.0e-3;           % Pa·s - Viscosidad mínima
+params.eta_max = 4.5e-3;           % Pa·s - Viscosidad máxima
+
+% Densidad
+params.rho = 1060;                 % kg/m³ - Densidad de la sangre
+
+%% ========== PARÁMETROS HEMODINÁMICOS ==========
+
+% Flujo sanguíneo (m³/s)
+params.Q_min = 3.0e-6;             % m³/s - Flujo mínimo
+params.Q_max = 9.0e-6;             % m³/s - Flujo máximo
+
+% Presión arterial media (Pa)
+params.PAM_min = 10000;            % Pa - Presión mínima (~75 mmHg)
+params.PAM_max = 13300;            % Pa - Presión máxima (~100 mmHg)
+
+%% ========== PARÁMETROS DE RIESGO ==========
+
+% Número de Reynolds - Umbrales de régimen de flujo
+params.Re_laminar = 2000;          % Re < 2000 → Laminar
+params.Re_turbulento = 4000;       % Re > 4000 → Turbulento
+
+% Wall Shear Stress (WSS) - Umbrales (Pa)
+params.WSS_bajo = 0.4;             % Pa - WSS bajo (riesgo aneurisma)
+params.WSS_alto = 2.5;             % Pa - WSS alto (daño endotelial)
+
+% Shear Rate - Umbrales (s⁻¹)
+params.shear_bajo = 100;           % s⁻¹ - Riesgo trombosis
+params.shear_alto = 1500;          % s⁻¹ - Riesgo daño celular
+
+% Grosor arterial (m)
+params.h_arterial_min = 0.7e-3;    % m - 0.7 mm
+params.h_arterial_max = 0.8e-3;    % m - 0.8 mm
+
+%% ========== ANÁLISIS DE INFARTO ==========
+
+% Teoría Venturi vs Resistencia
+params.Q_minimo_porcentaje = 10;   % % - Flujo mínimo viable (% del normal)
+params.P_externa_mmHg = 20;        % mmHg - Presión tisular externa
+
+% Análisis paramétrico
+params.Q_min_barrido = [10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90, 95, 100];
+params.P_ext_barrido = [10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90, 95, 100];
+params.radio_barrido = linspace(1e-4, 15e-3, 50);  % m - Radios para barrido (1-15 mm) - Ampliado
+params.radio_busqueda_max = 15e-3; % m - Máximo radio para búsqueda automática
+
+%% ========== OPCIONES DE VISUALIZACIÓN ==========
+
+% params.mostrar_figuras = true;     % true/false - Mostrar gráficas
+% params.guardar_figuras = false;    % true/false - Guardar a disco
+% params.cerrar_figuras_previas = true; % true/false - Cerrar figuras anteriores
+% 
+% % Opciones de figuras individuales
+% params.graficar_resistencias = false;
+% params.graficar_velocidades = false;
+% params.graficar_reynolds = false;
+% params.graficar_wss = false;
+% params.graficar_infarto = false;
+% params.graficar_parametrico = true;
+
+params.mostrar_figuras = false;     % true/false - Mostrar gráficas
+params.guardar_figuras = false;    % true/false - Guardar a disco
+params.cerrar_figuras_previas = true; % true/false - Cerrar figuras anteriores
+
+% Opciones de figuras individuales
+params.graficar_resistencias = true;
+params.graficar_velocidades = true;
+params.graficar_reynolds = true;
+params.graficar_wss = true;
+params.graficar_infarto = true;
+params.graficar_parametrico = true;
+
+%% ========== ANÁLISIS AVANZADOS (NUEVOS) ==========
+
+% Análisis Adimensional
+params.graficar_adimensional = true;     % Activar análisis de números adimensionales
+params.frecuencia_cardiaca = 1.2;        % Hz - Frecuencia cardíaca (72 lpm)
+
+% Análisis de Sensibilidad
+params.graficar_sensibilidad = true;     % Activar análisis de sensibilidad
+
+%% ========== OPCIONES DE SALIDA ==========
+
+params.verbose = true;             % true/false - Mostrar mensajes detallados
+params.guardar_resultados = false; % true/false - Guardar datos a .mat
+
+% Carpeta de resultados
+params.carpeta_resultados = 'resultados';
+
+%% ========== INFORMACIÓN ==========
+
+fprintf('\n========================================\n');
+fprintf('   CONFIGURACIÓN CARGADA\n');
+fprintf('========================================\n');
+fprintf('Radios: %.2f - %.2f mm (%d puntos)\n', ...
+    params.radio_min*1000, params.radio_max*1000, params.num_radios);
+fprintf('Oclusión radial: %d - %d%% (%d puntos)\n', ...
+    params.ocl_radial_min, params.ocl_radial_max, params.num_ocl_radial);
+fprintf('Q mínimo viable: %d%% del flujo normal\n', params.Q_minimo_porcentaje);
+fprintf('P externa: %d mmHg\n', params.P_externa_mmHg);
+fprintf('========================================\n\n');
+
+end
